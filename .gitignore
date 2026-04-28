@@ -32,3 +32,12 @@ build/
 ### VS Code ###
 .vscode/
 .env
+.DS_Store
+/src/.DS_Store
+/src/main/.DS_Store
+/src/main/java/.DS_Store
+/src/main/java/com/.DS_Store
+/src/main/java/com/ferreiracurso/.DS_Store
+/src/main/java/com/ferreiracurso/admin/.DS_Store
+/src/main/java/com/ferreiracurso/admin/service/.DS_Store
+/src/main/java/com/ferreiracurso/admin/service/impl/.DS_Store
