@@ -32,7 +32,8 @@ public class CurriculumController {
             return ResponseEntity.badRequest().body("Invalid payload");
         }
         CurriculumDto created = curriculumService.create(request);
-        return ResponseEntity.created(URI.create("/api/curricula/" + created.getId())).body(created);
+        // Mantém o Location consistente com o @RequestMapping do controller e com os demais endpoints expostos.
+        return ResponseEntity.created(URI.create("/api/curriculum/" + created.getId())).body(created);
     }
 
     @GetMapping("/{id}")
