@@ -2,60 +2,62 @@
 
 # Admin Course (Backend)
 
-Este repositório contém a API backend do administrador do sistema de cursos — uma aplicação Java com Spring Boot que expõe endpoints REST consumidos por um cliente (por exemplo, AngularJS).
+This repository contains the backend API (admin) for the course management system — a Java Spring Boot application exposing REST endpoints consumed by a client (for example, AngularJS).
 
-## Visão geral
-- Função: backend administrativo para gerenciar cursos, matérias (subjects) e professores.
-- Estrutura: controllers enxutos, services com a lógica de negócio, repositories Spring Data JPA, DTOs e mappers para conversão entre entidades e camadas de transporte.
-- Relacionamentos importantes: Course <-> Subject e Professor <-> Subject são relações many-to-many (tabelas de junção).
+## What this project is
+- Purpose: Administrative backend used to manage courses, subjects and professors, and related domain objects like curricula (grade curricular).
+- This module is the administrator API for the courses project and is intended to be used by an admin UI or automated scripts.
+- Architecture: thin controllers, services with business logic, Spring Data JPA repositories, DTOs and mappers for conversion between entities and transport layers.
+- Important relationships: Course <-> Subject and Professor <-> Subject are many-to-many. Curriculum <-> Course is one-to-one.
 
-## Principais pacotes
-- `com.ferreiracurso.admin.controller` — endpoints REST (ex.: `/api/courses`, `/api/subjects`, `/api/professors`)
-- `com.ferreiracurso.admin.service` — interfaces de serviço
-- `com.ferreiracurso.admin.service.impl` — implementações dos serviços (injeção por construtor)
-- `com.ferreiracurso.admin.repository` — repositórios Spring Data JPA
-- `com.ferreiracurso.admin.model` — entidades JPA (Course, Subject, Professor)
-- `com.ferreiracurso.admin.dto` — DTOs para entrada/saída
-- `com.ferreiracurso.admin.mapper` — mappers para converter entre entidades e DTOs
+## Main packages
+- `com.ferreiracurso.admin.controller` — REST endpoints (e.g. `/api/courses`, `/api/subjects`, `/api/professors`, `/api/curricula`)
+- `com.ferreiracurso.admin.service` — service interfaces
+- `com.ferreiracurso.admin.service.impl` — service implementations (constructor injection)
+- `com.ferreiracurso.admin.repository` — Spring Data JPA repositories
+- `com.ferreiracurso.admin.model` — JPA entities (Course, Subject, Professor, Curriculum)
+- `com.ferreiracurso.admin.dto` — DTOs for input/output
+- `com.ferreiracurso.admin.mapper` — mappers to convert between entities and DTOs
 
-## Como compilar e executar
-1. Build (gera o JAR):
+## How to build and run
+1. Build (produces the JAR):
 
     ```bash
     ./mvnw clean package
     ```
 
-2. Executar a aplicação localmente:
+2. Run the application locally:
 
     ```bash
     ./mvnw spring-boot:run
-    # ou
+    # or
     java -jar target/admin-0.0.1-SNAPSHOT.jar
     ```
 
-3. Executar os testes:
+3. Run the tests:
 
     ```bash
     ./mvnw test
     ```
 
-## EndPoints REST principais (exemplos)
-- Cursos: `POST /api/courses`, `GET /api/courses`, `GET /api/courses/{id}`, `PUT /api/courses/{id}`, `DELETE /api/courses/{id}`
-- Matérias: `POST /api/subjects`, `GET /api/subjects`, `GET /api/subjects/{id}`, `PUT /api/subjects/{id}`, `DELETE /api/subjects/{id}`
-- Professores: `POST /api/professors`, `GET /api/professors`, `GET /api/professors/{id}`, `PUT /api/professors/{id}`, `DELETE /api/professors/{id}`
+## Main REST endpoints (examples)
+- Courses: `POST /api/courses`, `GET /api/courses`, `GET /api/courses/{id}`, `PUT /api/courses/{id}`, `DELETE /api/courses/{id}`
+- Subjects: `POST /api/subjects`, `GET /api/subjects`, `GET /api/subjects/{id}`, `PUT /api/subjects/{id}`, `DELETE /api/subjects/{id}`
+- Professors: `POST /api/professors`, `GET /api/professors`, `GET /api/professors/{id}`, `PUT /api/professors/{id}`, `DELETE /api/professors/{id}`
+- Curricula: `POST /api/curricula`, `GET /api/curricula`, `GET /api/curricula/{id}`, `PUT /api/curricula/{id}`, `DELETE /api/curricula/{id}`
 
-## Boas práticas e observações
-- Validação de entrada usa JSR-380 (`@NotNull`, `@NotBlank`, `@Size`, etc.).
-- Use BigDecimal para valores monetários (ex.: price, salary).
-- Injeção de dependência por construtor, campos `private final` nas classes de serviço.
-- Relacionamentos many-to-many usam tabelas de junção sem cascade REMOVE por segurança; Subject é mantido simples para evitar alterações indesejadas.
+## Best practices and notes
+- Input validation uses JSR-380 (`@NotNull`, `@NotBlank`, `@Size`, etc.).
+- Use BigDecimal for monetary values (e.g., price, salary).
+- Constructor injection and `private final` fields are used for services and components.
+- Many-to-many relationships use join tables without cascade REMOVE by default to avoid accidental deletes.
 
-## Configuração
-- As configurações estão em `src/main/resources/application.properties` (datasource, portas, propriedades JWT se houver).
-- Recomenda-se usar perfis Spring (`dev`, `test`, `prod`) para ambientes diferentes.
+## Configuration
+- Configuration is in `src/main/resources/application.properties` (datasource, ports, JWT properties if applicable).
+- Recommended to use Spring profiles (`dev`, `test`, `prod`) for different environments.
 
-## Contribuição
-- Faça um fork, crie uma branch feature, implemente e abra um PR. Siga o padrão de pacotes e as convenções de validação e logging existentes.
+## Contributing
+- Fork the repo, create a feature branch, implement and open a PR. Follow package and validation/logging conventions.
 
-## Contato
-- Mantido por Ricardo Ferreira (projeto de exemplo/curso).
+## Contact
+- Maintained by Ricardo Ferreira (example/course project).
