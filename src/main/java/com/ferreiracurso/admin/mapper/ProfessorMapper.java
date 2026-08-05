@@ -3,7 +3,6 @@ package com.ferreiracurso.admin.mapper;
 import com.ferreiracurso.admin.dto.ProfessorDto;
 import com.ferreiracurso.admin.dto.SubjectDto;
 import com.ferreiracurso.admin.model.Professor;
-import com.ferreiracurso.admin.model.Subject;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

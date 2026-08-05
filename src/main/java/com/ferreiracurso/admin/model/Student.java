@@ -1,6 +1,8 @@
 package com.ferreiracurso.admin.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,24 +25,30 @@ public class Student {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "registration", nullable = false, unique = true)      //numero da matricula
+    private String registration;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "student_subject",
+            name = "student_courses",
             joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id")
+            inverseJoinColumns = @JoinColumn(name = "courses_id")
     )
-    private List<Subject> subjects;
+    private List<Course> courses = new ArrayList<>();
 
     public Student() {
     }
 
-    public Student(Long id, String name, String email, String password, String token, List<Subject> subjects) {
+    public Student(Long id, String name, String email, String password,
+                   String token, String registration,
+                   List<Course> courses) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.token = token;
-        this.subjects = subjects;
+        this.registration = registration;
+        this.courses = courses;
     }
 
     public Long getId() {
@@ -83,11 +91,19 @@ public class Student {
         this.token = token;
     }
 
-    public List<Subject> getSubjects() {
-        return subjects;
+    public String getRegistration() {
+        return registration;
     }
 
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
+    public void setRegistration(String registration) {
+        this.registration = registration;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }
