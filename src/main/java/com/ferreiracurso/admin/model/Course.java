@@ -3,7 +3,6 @@ package com.ferreiracurso.admin.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
