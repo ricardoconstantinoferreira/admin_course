@@ -60,8 +60,14 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(studentCourseDto.getStudentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Student", "id", studentCourseDto.getStudentId()));
 
+        for(Course course1: student.getCourses()) {
+            courseList.add(course1);
+        }
+
         courseList.add(course);
-        student.setCourses(courseList);
+
+        List<Course> resultList = new ArrayList<>(new LinkedHashSet<>(courseList));
+        student.setCourses(resultList);
 
         Student student1 = studentRepository.save(student);
 
