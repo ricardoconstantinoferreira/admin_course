@@ -1,5 +1,6 @@
 package com.ferreiracurso.admin.service.impl;
 
+import com.ferreiracurso.admin.dto.StudentCourseDto;
 import com.ferreiracurso.admin.dto.StudentDto;
 import com.ferreiracurso.admin.mapper.StudentMapper;
 import com.ferreiracurso.admin.model.Course;
@@ -10,10 +11,7 @@ import com.ferreiracurso.admin.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -51,5 +49,38 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getAll() {
         return List.of();
+    }
+
+    @Override
+    public String associateStudentToCourse(StudentCourseDto studentCourseDto) {
+        List<Course> courseList = new ArrayList<>();
+
+        Course course = courseRepository.findById(studentCourseDto.getCourseId())
+                .orElseThrow(() -> new ResourceNotFoundException("Course", "id", studentCourseDto.getCourseId()));
+        Student student = studentRepository.findById(studentCourseDto.getStudentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Student", "id", studentCourseDto.getStudentId()));
+
+        for(Course course1: student.getCourses()) {
+            courseList.add(course1);
+        }
+
+        courseList.add(course);
+
+        List<Course> resultList = new ArrayList<>(new LinkedHashSet<>(courseList));
+        student.setCourses(resultList);
+
+        Student student1 = studentRepository.save(student);
+
+        if (student1 == null) {
+            throw new IllegalArgumentException("Estudante " + student.getName() + " não associado ao curso " + course.getDescription());
+        } else {
+            return "Estudante " + student.getName() + " associado ao curso " + course.getDescription();
+        }
+    }
+
+    static class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String resource, String field, Object value) {
+            super(String.format("%s not found with %s : '%s'", resource, field, value));
+        }
     }
 }

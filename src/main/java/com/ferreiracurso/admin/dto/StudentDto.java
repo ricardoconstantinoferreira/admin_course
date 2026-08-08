@@ -1,13 +1,23 @@
 package com.ferreiracurso.admin.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
 public class StudentDto {
 
     private Long id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String email;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private List<Long> courses;
 
     public StudentDto() {
