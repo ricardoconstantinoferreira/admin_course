@@ -1,11 +1,15 @@
 package com.ferreiracurso.admin.service.impl;
 
+import com.ferreiracurso.admin.dto.LockedDto;
 import com.ferreiracurso.admin.dto.StudentCourseDto;
 import com.ferreiracurso.admin.dto.StudentDto;
+import com.ferreiracurso.admin.exception.EmailAlreadyExistsException;
 import com.ferreiracurso.admin.mapper.StudentMapper;
 import com.ferreiracurso.admin.model.Course;
 import com.ferreiracurso.admin.model.Student;
+import com.ferreiracurso.admin.model.StudentCourses;
 import com.ferreiracurso.admin.repository.CourseRepository;
+import com.ferreiracurso.admin.repository.StudentCoursesRepository;
 import com.ferreiracurso.admin.repository.StudentRepository;
 import com.ferreiracurso.admin.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -20,24 +24,22 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final CourseRepository courseRepository;
+    private final StudentCoursesRepository studentCoursesRepository;
 
     @Override
     public Student save(StudentDto studentDto) {
+
+        Optional<Student> studentOptional = studentRepository.findByEmail(studentDto.getEmail());
+
+        if (!studentOptional.isEmpty()) {
+            throw new EmailAlreadyExistsException("Email já existe.");
+        }
 
         Random random = new Random();
         String registration = String.valueOf(10000 + random.nextInt(90000));
         Student student = studentMapper.toEntity(studentDto);
         student.setRegistration(registration);
 
-        List<Course> courseList = new ArrayList<>();
-        for (Long course: studentDto.getCourses()) {
-            Optional<Course> course1 = courseRepository.findById(course);
-
-            if (!course1.isEmpty()) {
-                courseList.add(course1.get());
-            }
-        }
-        student.setCourses(courseList);
         return studentRepository.save(student);
     }
 
@@ -53,28 +55,44 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String associateStudentToCourse(StudentCourseDto studentCourseDto) {
-        List<Course> courseList = new ArrayList<>();
-
         Course course = courseRepository.findById(studentCourseDto.getCourseId())
                 .orElseThrow(() -> new ResourceNotFoundException("Course", "id", studentCourseDto.getCourseId()));
         Student student = studentRepository.findById(studentCourseDto.getStudentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Student", "id", studentCourseDto.getStudentId()));
 
-        for(Course course1: student.getCourses()) {
-            courseList.add(course1);
+        Long hasRegister = studentCoursesRepository.hasRegistersStudentToCourse(student.getId(), course.getId());
+
+        if (hasRegister > 0) {
+            throw new IllegalArgumentException("Associação desse aluno com esse curso já existe.");
         }
 
-        courseList.add(course);
+        StudentCourses studentCourses = new StudentCourses();
+        studentCourses.setCourse(course);
+        studentCourses.setStudent(student);
+        studentCourses.setFinish(false);
+        studentCourses.setLocked(false);
 
-        List<Course> resultList = new ArrayList<>(new LinkedHashSet<>(courseList));
-        student.setCourses(resultList);
-
-        Student student1 = studentRepository.save(student);
+        StudentCourses student1 = studentCoursesRepository.save(studentCourses);
 
         if (student1 == null) {
             throw new IllegalArgumentException("Estudante " + student.getName() + " não associado ao curso " + course.getDescription());
         } else {
             return "Estudante " + student.getName() + " associado ao curso " + course.getDescription();
+        }
+    }
+
+    @Override
+    public String changeLockedStudentCourse(LockedDto lockedDto) {
+        StudentCourses studentCourses = studentCoursesRepository.getStudentCouses(lockedDto.getStudentId(),
+                lockedDto.getCourseId());
+        studentCourses.setLocked(lockedDto.isLocked());
+
+        studentCoursesRepository.save(studentCourses);
+
+        if (lockedDto.isLocked()) {
+            return "Curso trancado com sucesso";
+        } else {
+            return "Curso destrancado com sucesso";
         }
     }
 

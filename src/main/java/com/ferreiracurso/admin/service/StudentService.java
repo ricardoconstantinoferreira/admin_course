@@ -1,5 +1,6 @@
 package com.ferreiracurso.admin.service;
 
+import com.ferreiracurso.admin.dto.LockedDto;
 import com.ferreiracurso.admin.dto.StudentCourseDto;
 import com.ferreiracurso.admin.dto.StudentDto;
 import com.ferreiracurso.admin.model.Student;
@@ -11,4 +12,5 @@ public interface StudentService {
     Student getById(Long id);
     List<Student> getAll();
     String associateStudentToCourse(StudentCourseDto studentCourseDto);
+    String changeLockedStudentCourse(LockedDto lockedDto);
 }

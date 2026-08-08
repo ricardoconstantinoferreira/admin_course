@@ -3,15 +3,9 @@ package com.ferreiracurso.admin.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-/**
- * Course entity representing a course in the system.
- * <p>
- * - Uses BigDecimal for monetary values to avoid floating point precision problems.
- * - Unidirectional many-to-many relationship to Subject (Course is the owning side).
- * - Fetch type for collections is LAZY to avoid unnecessary eager loading.
- */
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -37,13 +31,17 @@ public class Course {
     )
     private Set<Subject> subjects = new HashSet<>();
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentCourses> studentCourses;
+
     public Course() {
     }
 
-    public Course(String description, Integer totalTime, BigDecimal price) {
+    public Course(String description, Integer totalTime, BigDecimal price, List<StudentCourses> studentCourses) {
         this.description = description;
         this.totalTime = totalTime;
         this.price = price;
+        this.studentCourses = studentCourses;
     }
 
     public Long getId() {
@@ -80,5 +78,13 @@ public class Course {
 
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public List<StudentCourses> getStudentCourses() {
+        return studentCourses;
+    }
+
+    public void setStudentCourses(List<StudentCourses> studentCourses) {
+        this.studentCourses = studentCourses;
     }
 }
