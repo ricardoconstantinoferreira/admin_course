@@ -28,27 +28,22 @@ public class Student {
     @Column(name = "registration", nullable = false, unique = true)      //numero da matricula
     private String registration;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "student_courses",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "courses_id")
-    )
-    private List<Course> courses = new ArrayList<>();
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentCourses> studentCourses = new ArrayList<>();
 
     public Student() {
     }
 
     public Student(Long id, String name, String email, String password,
                    String token, String registration,
-                   List<Course> courses) {
+                   List<StudentCourses> studentCourses) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.token = token;
         this.registration = registration;
-        this.courses = courses;
+        this.studentCourses = studentCourses;
     }
 
     public Long getId() {
@@ -99,11 +94,11 @@ public class Student {
         this.registration = registration;
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public List<StudentCourses> getStudentCourses() {
+        return studentCourses;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setStudentCourses(List<StudentCourses> studentCourses) {
+        this.studentCourses = studentCourses;
     }
 }

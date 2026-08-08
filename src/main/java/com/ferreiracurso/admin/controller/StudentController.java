@@ -1,5 +1,7 @@
 package com.ferreiracurso.admin.controller;
 
+import com.ferreiracurso.admin.dto.FinishDto;
+import com.ferreiracurso.admin.dto.LockedDto;
 import com.ferreiracurso.admin.dto.StudentCourseDto;
 import com.ferreiracurso.admin.dto.StudentDto;
 import com.ferreiracurso.admin.model.Student;
@@ -27,5 +29,15 @@ public class StudentController {
     @PutMapping("/associate-course")
     public ResponseEntity<String> associate(@Valid @RequestBody StudentCourseDto studentCourseDto) {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.associateStudentToCourse(studentCourseDto));
+    }
+
+    @PutMapping("/change-locked")
+    public ResponseEntity<String> locked(@RequestBody LockedDto lockedDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.changeLockedStudentCourse(lockedDto));
+    }
+
+    @PutMapping("/change-finish")
+    public ResponseEntity<String> finish(@RequestBody FinishDto finishDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.changeFinishStudentCourse(finishDto));
     }
 }

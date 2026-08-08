@@ -2,8 +2,6 @@ package com.ferreiracurso.admin.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-import java.util.List;
-
 public class StudentDto {
 
     private Long id;
@@ -17,18 +15,14 @@ public class StudentDto {
     @NotBlank
     private String password;
 
-    @NotBlank
-    private List<Long> courses;
-
     public StudentDto() {
     }
 
-    public StudentDto(Long id, String name, String email, String password, List<Long> courses) {
+    public StudentDto(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.courses = courses;
     }
 
     public Long getId() {
@@ -61,13 +55,5 @@ public class StudentDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Long> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Long> courses) {
-        this.courses = courses;
     }
 }
