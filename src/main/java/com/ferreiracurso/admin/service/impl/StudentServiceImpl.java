@@ -1,5 +1,6 @@
 package com.ferreiracurso.admin.service.impl;
 
+import com.ferreiracurso.admin.dto.FinishDto;
 import com.ferreiracurso.admin.dto.LockedDto;
 import com.ferreiracurso.admin.dto.StudentCourseDto;
 import com.ferreiracurso.admin.dto.StudentDto;
@@ -94,6 +95,16 @@ public class StudentServiceImpl implements StudentService {
         } else {
             return "Curso destrancado com sucesso";
         }
+    }
+
+    @Override
+    public String changeFinishStudentCourse(FinishDto finishDto) {
+        StudentCourses studentCourses = studentCoursesRepository.getStudentCouses(finishDto.getStudentId(),
+                finishDto.getCourseId());
+        studentCourses.setFinish(finishDto.isFinish());
+
+        studentCoursesRepository.save(studentCourses);
+        return "Status de finalização do curso feito com sucesso.";
     }
 
     static class ResourceNotFoundException extends RuntimeException {
