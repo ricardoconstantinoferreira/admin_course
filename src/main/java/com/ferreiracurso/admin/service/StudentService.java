@@ -15,4 +15,5 @@ public interface StudentService {
     String associateStudentToCourse(StudentCourseDto studentCourseDto);
     String changeLockedStudentCourse(LockedDto lockedDto);
     String changeFinishStudentCourse(FinishDto finishDto);
+    String authenticateStudentToken(String registration, String password);
 }

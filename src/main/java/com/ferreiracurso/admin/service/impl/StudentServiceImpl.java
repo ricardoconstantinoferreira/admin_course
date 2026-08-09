@@ -12,12 +12,17 @@ import com.ferreiracurso.admin.model.StudentCourses;
 import com.ferreiracurso.admin.repository.CourseRepository;
 import com.ferreiracurso.admin.repository.StudentCoursesRepository;
 import com.ferreiracurso.admin.repository.StudentRepository;
+import com.ferreiracurso.admin.security.JwtService;
 import com.ferreiracurso.admin.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -26,6 +31,8 @@ public class StudentServiceImpl implements StudentService {
     private final StudentMapper studentMapper;
     private final CourseRepository courseRepository;
     private final StudentCoursesRepository studentCoursesRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
     public Student save(StudentDto studentDto) {
@@ -40,6 +47,8 @@ public class StudentServiceImpl implements StudentService {
         String registration = String.valueOf(10000 + random.nextInt(90000));
         Student student = studentMapper.toEntity(studentDto);
         student.setRegistration(registration);
+
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
 
         return studentRepository.save(student);
     }
@@ -105,6 +114,21 @@ public class StudentServiceImpl implements StudentService {
 
         studentCoursesRepository.save(studentCourses);
         return "Status de finalização do curso feito com sucesso.";
+    }
+
+    @Override
+    public String authenticateStudentToken(String registration, String password) {
+        Student student = studentRepository.findByRegistration(registration)
+                .orElseThrow(() -> new BadCredentialsException("Invalid registration or password"));
+
+        if (!passwordEncoder.matches(password, student.getPassword())) {
+            log.warn("Bad credentials for {}", registration);
+            throw new BadCredentialsException("Invalid registration or password");
+        }
+
+        String token = jwtService.generateToken(student.getRegistration(), student.getId());
+        log.info("Issued token for registration {} (id={})", student.getRegistration(), student.getId());
+        return token;
     }
 
     static class ResourceNotFoundException extends RuntimeException {
