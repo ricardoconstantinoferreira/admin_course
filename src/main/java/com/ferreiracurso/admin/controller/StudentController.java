@@ -1,17 +1,18 @@
 package com.ferreiracurso.admin.controller;
 
-import com.ferreiracurso.admin.dto.FinishDto;
-import com.ferreiracurso.admin.dto.LockedDto;
-import com.ferreiracurso.admin.dto.StudentCourseDto;
-import com.ferreiracurso.admin.dto.StudentDto;
+import com.ferreiracurso.admin.dto.*;
 import com.ferreiracurso.admin.model.Student;
 import com.ferreiracurso.admin.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/students")
@@ -24,6 +25,25 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 studentService.save(studentDto)
         );
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody StudentLoginDto studentLoginDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.warn("Invalid login request");
+            return ResponseEntity.badRequest().body("Invalid credentials format");
+        }
+
+        try {
+            String token = studentService.authenticateStudentToken(studentLoginDto.getRegistration(), studentLoginDto.getPassword());
+            return ResponseEntity.ok(new LoginResponse(token));
+        } catch (BadCredentialsException ex) {
+            log.warn("Bad credentials for {}", studentLoginDto.getRegistration());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        } catch (Exception ex) {
+            log.error("Authentication error", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Authentication failed");
+        }
     }
 
     @PutMapping("/associate-course")
