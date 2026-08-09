@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProfessorDto {
+public class TeacherDto {
     private Long id;
     private String name;
     private String specialization;
     private BigDecimal salary;
     private Set<SubjectDto> subjects = new HashSet<>();
 
-    public ProfessorDto() {
+    public TeacherDto() {
     }
 
     public Long getId() {

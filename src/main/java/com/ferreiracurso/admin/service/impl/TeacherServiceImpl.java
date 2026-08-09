@@ -1,12 +1,12 @@
 package com.ferreiracurso.admin.service.impl;
 
-import com.ferreiracurso.admin.dto.CreateProfessorRequest;
-import com.ferreiracurso.admin.dto.ProfessorDto;
-import com.ferreiracurso.admin.model.Professor;
+import com.ferreiracurso.admin.dto.CreateTeacherRequest;
+import com.ferreiracurso.admin.dto.TeacherDto;
+import com.ferreiracurso.admin.model.Teacher;
 import com.ferreiracurso.admin.model.Subject;
-import com.ferreiracurso.admin.repository.ProfessorRepository;
+import com.ferreiracurso.admin.repository.TeacherRepository;
 import com.ferreiracurso.admin.repository.SubjectRepository;
-import com.ferreiracurso.admin.service.ProfessorService;
+import com.ferreiracurso.admin.service.TeacherService;
 import com.ferreiracurso.admin.mapper.ProfessorMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,70 +19,70 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class ProfessorServiceImpl implements ProfessorService {
+public class TeacherServiceImpl implements TeacherService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProfessorServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
-    private final ProfessorRepository professorRepository;
+    private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
     private final ProfessorMapper professorMapper;
 
-    public ProfessorServiceImpl(ProfessorRepository professorRepository, SubjectRepository subjectRepository, ProfessorMapper professorMapper) {
-        this.professorRepository = professorRepository;
+    public TeacherServiceImpl(TeacherRepository teacherRepository, SubjectRepository subjectRepository, ProfessorMapper professorMapper) {
+        this.teacherRepository = teacherRepository;
         this.subjectRepository = subjectRepository;
         this.professorMapper = professorMapper;
     }
 
     @Override
-    public ProfessorDto create(CreateProfessorRequest request) {
-        Professor professor = new Professor();
-        professor = professorMapper.toEntity(professor, request);
+    public TeacherDto create(CreateTeacherRequest request) {
+        Teacher teacher = new Teacher();
+        teacher = professorMapper.toEntity(teacher, request);
 
         if (request.getSubjectIds() != null && !request.getSubjectIds().isEmpty()) {
             Set<Subject> subjects = subjectRepository.findAllById(request.getSubjectIds()).stream().collect(Collectors.toSet());
             if (subjects.size() != request.getSubjectIds().size()) {
                 throw new ResourceNotFoundException("Subject", "id", "one or more subject ids not found");
             }
-            professor.setSubjects(subjects);
+            teacher.setSubjects(subjects);
         }
-        Professor saved = professorRepository.save(professor);
+        Teacher saved = teacherRepository.save(teacher);
         logger.info("Created Professor id {}", saved.getId());
         return professorMapper.toDto(saved);
     }
 
     @Override
-    public ProfessorDto getById(Long id) {
-        Professor p = professorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professor", "id", id));
+    public TeacherDto getById(Long id) {
+        Teacher p = teacherRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professor", "id", id));
         return professorMapper.toDto(p);
     }
 
     @Override
-    public List<ProfessorDto> getAll() {
-        return professorRepository.findAll().stream().map(professorMapper::toDto).collect(Collectors.toList());
+    public List<TeacherDto> getAll() {
+        return teacherRepository.findAll().stream().map(professorMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public ProfessorDto update(Long id, CreateProfessorRequest request) {
-        Professor professor = professorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professor", "id", id));
-        professor = professorMapper.toEntity(professor, request);
+    public TeacherDto update(Long id, CreateTeacherRequest request) {
+        Teacher teacher = teacherRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professor", "id", id));
+        teacher = professorMapper.toEntity(teacher, request);
         if (request.getSubjectIds() != null) {
             Set<Subject> subjects = subjectRepository.findAllById(request.getSubjectIds()).stream().collect(Collectors.toSet());
             if (subjects.size() != request.getSubjectIds().size()) {
                 throw new ResourceNotFoundException("Subject", "id", "one or more subject ids not found");
             }
-            professor.setSubjects(subjects);
+            teacher.setSubjects(subjects);
         }
-        Professor saved = professorRepository.save(professor);
+        Teacher saved = teacherRepository.save(teacher);
         logger.info("Updated Professor id {}", saved.getId());
         return professorMapper.toDto(saved);
     }
 
     @Override
     public void delete(Long id) {
-        if (!professorRepository.existsById(id)) {
+        if (!teacherRepository.existsById(id)) {
             throw new ResourceNotFoundException("Professor", "id", id);
         }
-        professorRepository.deleteById(id);
+        teacherRepository.deleteById(id);
         logger.info("Deleted Professor id {}", id);
     }
 

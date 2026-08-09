@@ -1,9 +1,9 @@
 package com.ferreiracurso.admin.repository;
 
-import com.ferreiracurso.admin.model.Professor;
+import com.ferreiracurso.admin.model.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfessorRepository extends JpaRepository<Professor, Long> {
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 }
