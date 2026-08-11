@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class CreateProfessorRequest {
+public class CreateTeacherRequest {
 
     @NotBlank
     @Size(min = 1, max = 200)
@@ -24,7 +24,7 @@ public class CreateProfessorRequest {
 
     private Set<Long> subjectIds;
 
-    public CreateProfessorRequest() {
+    public CreateTeacherRequest() {
     }
 
     public String getName() {

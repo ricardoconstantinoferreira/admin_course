@@ -4,14 +4,15 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProfessorDto {
+public class TeacherDto {
     private Long id;
     private String name;
     private String specialization;
     private BigDecimal salary;
     private Set<SubjectDto> subjects = new HashSet<>();
+    private String admissionDate;
 
-    public ProfessorDto() {
+    public TeacherDto() {
     }
 
     public Long getId() {
@@ -52,5 +53,13 @@ public class ProfessorDto {
 
     public void setSubjects(Set<SubjectDto> subjects) {
         this.subjects = subjects;
+    }
+
+    public String getAdmissionDate() {
+        return admissionDate;
+    }
+
+    public void setAdmissionDate(String admissionDate) {
+        this.admissionDate = admissionDate;
     }
 }
