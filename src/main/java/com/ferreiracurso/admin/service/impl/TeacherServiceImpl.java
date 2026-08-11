@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
             }
             teacher.setSubjects(subjects);
         }
+        teacher.setAdmissionDate(LocalDateTime.now());
         Teacher saved = teacherRepository.save(teacher);
         logger.info("Created Professor id {}", saved.getId());
         return professorMapper.toDto(saved);

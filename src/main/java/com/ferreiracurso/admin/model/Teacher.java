@@ -2,6 +2,7 @@ package com.ferreiracurso.admin.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,12 @@ public class Teacher {
     @Column(nullable = false)
     private BigDecimal salary;
 
+    @Column(name = "admission_date")
+    private LocalDateTime admissionDate;
+
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "teacher_subject",
@@ -38,10 +45,14 @@ public class Teacher {
     public Teacher() {
     }
 
-    public Teacher(String name, String specialization, BigDecimal salary) {
+    public Teacher(Long id, String name, String specialization, BigDecimal salary, LocalDateTime admissionDate, LocalDateTime endDate, Set<Subject> subjects) {
+        this.id = id;
         this.name = name;
         this.specialization = specialization;
         this.salary = salary;
+        this.admissionDate = admissionDate;
+        this.endDate = endDate;
+        this.subjects = subjects;
     }
 
     public Long getId() {
@@ -78,5 +89,25 @@ public class Teacher {
 
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getAdmissionDate() {
+        return admissionDate;
+    }
+
+    public void setAdmissionDate(LocalDateTime admissionDate) {
+        this.admissionDate = admissionDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 }

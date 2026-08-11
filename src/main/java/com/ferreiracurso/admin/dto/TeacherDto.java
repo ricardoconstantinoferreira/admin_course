@@ -10,6 +10,7 @@ public class TeacherDto {
     private String specialization;
     private BigDecimal salary;
     private Set<SubjectDto> subjects = new HashSet<>();
+    private String admissionDate;
 
     public TeacherDto() {
     }
@@ -52,5 +53,13 @@ public class TeacherDto {
 
     public void setSubjects(Set<SubjectDto> subjects) {
         this.subjects = subjects;
+    }
+
+    public String getAdmissionDate() {
+        return admissionDate;
+    }
+
+    public void setAdmissionDate(String admissionDate) {
+        this.admissionDate = admissionDate;
     }
 }
