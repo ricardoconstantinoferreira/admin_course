@@ -1,5 +1,6 @@
 package com.ferreiracurso.admin.service.impl;
 
+import com.ferreiracurso.admin.dto.AssociateTeacherSubjects;
 import com.ferreiracurso.admin.dto.CreateTeacherRequest;
 import com.ferreiracurso.admin.dto.TeacherDto;
 import com.ferreiracurso.admin.model.Teacher;
@@ -8,15 +9,18 @@ import com.ferreiracurso.admin.repository.TeacherRepository;
 import com.ferreiracurso.admin.repository.SubjectRepository;
 import com.ferreiracurso.admin.service.TeacherService;
 import com.ferreiracurso.admin.mapper.ProfessorMapper;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class TeacherServiceImpl implements TeacherService {
@@ -26,12 +30,6 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
     private final ProfessorMapper professorMapper;
-
-    public TeacherServiceImpl(TeacherRepository teacherRepository, SubjectRepository subjectRepository, ProfessorMapper professorMapper) {
-        this.teacherRepository = teacherRepository;
-        this.subjectRepository = subjectRepository;
-        this.professorMapper = professorMapper;
-    }
 
     @Override
     public TeacherDto create(CreateTeacherRequest request) {
@@ -84,6 +82,28 @@ public class TeacherServiceImpl implements TeacherService {
         }
         teacherRepository.deleteById(id);
         logger.info("Deleted Professor id {}", id);
+    }
+
+    @Override
+    public Teacher associate(AssociateTeacherSubjects associateTeacherSubjects) {
+        Set<Subject> setSubject = new HashSet<>();
+
+        Teacher teacher = teacherRepository.findById(associateTeacherSubjects.teacherId())
+                .orElseThrow(() -> new StudentServiceImpl.ResourceNotFoundException("Teacher", "id",
+                        associateTeacherSubjects.teacherId()));
+
+        Subject subject = subjectRepository.findById(associateTeacherSubjects.subjectId())
+                .orElseThrow(() -> new StudentServiceImpl.ResourceNotFoundException("Subject", "id",
+                        associateTeacherSubjects.subjectId()));
+
+        for (Subject subject1: teacher.getSubjects()) {
+            setSubject.add(subject1);
+        }
+
+        setSubject.add(subject);
+        teacher.setSubjects(setSubject);
+
+        return teacherRepository.save(teacher);
     }
 
     static class ResourceNotFoundException extends RuntimeException {

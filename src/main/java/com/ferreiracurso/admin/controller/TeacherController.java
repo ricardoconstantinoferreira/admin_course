@@ -1,10 +1,13 @@
 package com.ferreiracurso.admin.controller;
 
+import com.ferreiracurso.admin.dto.AssociateTeacherSubjects;
 import com.ferreiracurso.admin.dto.CreateTeacherRequest;
 import com.ferreiracurso.admin.dto.TeacherDto;
+import com.ferreiracurso.admin.model.Teacher;
 import com.ferreiracurso.admin.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +46,13 @@ public class TeacherController {
     @GetMapping
     public ResponseEntity<List<TeacherDto>> getAll() {
         return ResponseEntity.ok(teacherService.getAll());
+    }
+
+    @PostMapping("/associate")
+    public ResponseEntity<Teacher> associate(@RequestBody AssociateTeacherSubjects associateTeacherSubjects) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                teacherService.associate(associateTeacherSubjects)
+        );
     }
 
     @PutMapping("/{id}")
