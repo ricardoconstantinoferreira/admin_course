@@ -108,6 +108,15 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherRepository.save(teacher);
     }
 
+    @Override
+    public Teacher exitTeacher(Long id) {
+        Teacher teacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new StudentServiceImpl.ResourceNotFoundException("Teacher", "id", id));
+
+        teacher.setEndDate(LocalDateTime.now());
+        return teacherRepository.save(teacher);
+    }
+
     static class ResourceNotFoundException extends RuntimeException {
         public ResourceNotFoundException(String resource, String field, Object value) {
             super(String.format("%s not found with %s : '%s'", resource, field, value));

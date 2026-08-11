@@ -55,6 +55,13 @@ public class TeacherController {
         );
     }
 
+    @PutMapping("/exit/{id}")
+    public ResponseEntity<Teacher> exit(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                teacherService.exitTeacher(id)
+        );
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CreateTeacherRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

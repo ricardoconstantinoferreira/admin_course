@@ -14,4 +14,5 @@ public interface TeacherService {
     TeacherDto update(Long id, CreateTeacherRequest request);
     void delete(Long id);
     Teacher associate(AssociateTeacherSubjects associateTeacherSubjects);
+    Teacher exitTeacher(Long id);
 }
