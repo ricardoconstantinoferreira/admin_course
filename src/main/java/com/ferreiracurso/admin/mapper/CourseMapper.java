@@ -3,8 +3,8 @@ package com.ferreiracurso.admin.mapper;
 import com.ferreiracurso.admin.dto.CourseDto;
 import com.ferreiracurso.admin.dto.SubjectDto;
 import com.ferreiracurso.admin.model.Course;
-import com.ferreiracurso.admin.model.Subject;
 import org.springframework.stereotype.Component;
+import com.ferreiracurso.admin.dto.CreateCourseRequest;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +25,7 @@ public class CourseMapper {
         return dto;
     }
 
-    public Course toEntity(Course course, com.ferreiracurso.admin.dto.CreateCourseRequest req) {
+    public Course toEntity(Course course, CreateCourseRequest req) {
         course.setDescription(req.getDescription());
         course.setTotalTime(req.getTotalTime());
         course.setPrice(req.getPrice());
