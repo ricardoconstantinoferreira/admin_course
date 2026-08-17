@@ -1,6 +1,5 @@
 package com.ferreiracurso.admin.controller;
 
-import com.ferreiracurso.admin.dto.CourseDto;
 import com.ferreiracurso.admin.dto.CreateCourseRequest;
 import com.ferreiracurso.admin.model.Subject;
 import com.ferreiracurso.admin.service.ImporterService;
@@ -21,9 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @RestController
