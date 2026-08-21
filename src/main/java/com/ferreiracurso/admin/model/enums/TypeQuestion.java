@@ -1,4 +1,4 @@
-package com.ferreiracurso.admin.model;
+package com.ferreiracurso.admin.model.enums;
 
 public enum TypeQuestion {
     WRITE,                  //input type text

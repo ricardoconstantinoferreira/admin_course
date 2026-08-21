@@ -1,5 +1,6 @@
 package com.ferreiracurso.admin.model;
 
+import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

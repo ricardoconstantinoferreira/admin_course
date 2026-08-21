@@ -1,6 +1,6 @@
 package com.ferreiracurso.admin.dto;
 
-import com.ferreiracurso.admin.model.TypeQuestion;
+import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;

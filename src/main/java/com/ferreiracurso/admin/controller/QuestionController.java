@@ -20,8 +20,7 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity<Question> save(@RequestBody QuestionDto questionDto) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                questionService.save(questionDto)
-        );
+        Question question = questionService.save(questionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(question);
     }
 }

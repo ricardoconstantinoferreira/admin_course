@@ -21,5 +21,5 @@ public class QuestionSelectionBox {
     private Question question;
 
     @Column(name = "is_correct", nullable = false)
-    private boolean isCorrect = false;
+    private Boolean isCorrect = false;
 }
