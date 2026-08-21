@@ -11,20 +11,28 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class QuestionSaveContext {
-    private final Map<TypeQuestion, QuestionSaveStrategy> strategies;
+public class QuestionContext {
+    private final Map<TypeQuestion, QuestionStrategy> strategies;
 
     @Autowired
-    public QuestionSaveContext(List<QuestionSaveStrategy> strategyList) {
+    public QuestionContext(List<QuestionStrategy> strategyList) {
         this.strategies = strategyList.stream()
-                .collect(Collectors.toMap(QuestionSaveStrategy::getType, strategy -> strategy));
+                .collect(Collectors.toMap(QuestionStrategy::getType, strategy -> strategy));
     }
 
     public void executeSave(Question result, QuestionDto dto) {
-        QuestionSaveStrategy strategy = strategies.get(dto.getTypeQuestion());
+        QuestionStrategy strategy = strategies.get(dto.getTypeQuestion());
 
         if (strategy != null) {
             strategy.save(result, dto);
+        }
+    }
+
+    public void executeDelete(Question result) {
+        QuestionStrategy strategy = strategies.get(result.getTypeQuestion());
+
+        if (strategy != null) {
+            strategy.delete(result);
         }
     }
 }

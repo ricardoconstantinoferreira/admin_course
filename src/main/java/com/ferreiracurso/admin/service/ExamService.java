@@ -8,4 +8,6 @@ public interface ExamService {
     Exam save(ExamDto examDto);
 
     Exam getById(Long id);
+
+    void deleteById(Long id);
 }

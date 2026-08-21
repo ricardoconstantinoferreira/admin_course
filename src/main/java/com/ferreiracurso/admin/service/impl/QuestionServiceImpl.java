@@ -5,10 +5,9 @@ import com.ferreiracurso.admin.model.*;
 import com.ferreiracurso.admin.repository.QuestionRepository;
 import com.ferreiracurso.admin.service.ExamService;
 import com.ferreiracurso.admin.service.QuestionService;
-import com.ferreiracurso.admin.strategy.QuestionSaveContext;
+import com.ferreiracurso.admin.strategy.QuestionContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 
 @AllArgsConstructor
 @Service
@@ -16,7 +15,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final ExamService examService;
-    private QuestionSaveContext questionSaveContext;
+    private final QuestionContext questionContext;
 
     @Override
     public Question save(QuestionDto questionDto) {
@@ -29,7 +28,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         Question questionResult = questionRepository.save(question);
 
-        questionSaveContext.executeSave(questionResult, questionDto);
+        questionContext.executeSave(questionResult, questionDto);
 
         return questionResult;
     }

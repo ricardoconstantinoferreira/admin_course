@@ -9,7 +9,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "question_multiple_choise")
 public class QuestionMultipleChoise {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

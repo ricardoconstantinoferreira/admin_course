@@ -6,6 +6,8 @@ import com.ferreiracurso.admin.service.QuestionMultipleChoiseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class QuestionMultipleChoiseServiceImpl implements QuestionMultipleChoiseService {
@@ -15,5 +17,15 @@ public class QuestionMultipleChoiseServiceImpl implements QuestionMultipleChoise
     @Override
     public QuestionMultipleChoise save(QuestionMultipleChoise questionMultipleChoise) {
         return questionMultipleChoiseRepository.save(questionMultipleChoise);
+    }
+
+    @Override
+    public List<QuestionMultipleChoise> getByQuestionId(Long questionId) {
+        return questionMultipleChoiseRepository.findByQuestionId(questionId);
+    }
+
+    @Override
+    public void delete(QuestionMultipleChoise questionMultipleChoise) {
+        questionMultipleChoiseRepository.delete(questionMultipleChoise);
     }
 }

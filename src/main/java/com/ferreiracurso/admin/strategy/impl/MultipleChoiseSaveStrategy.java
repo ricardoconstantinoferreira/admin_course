@@ -6,7 +6,7 @@ import com.ferreiracurso.admin.model.Question;
 import com.ferreiracurso.admin.model.QuestionMultipleChoise;
 import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import com.ferreiracurso.admin.service.QuestionMultipleChoiseService;
-import com.ferreiracurso.admin.strategy.QuestionSaveStrategy;
+import com.ferreiracurso.admin.strategy.QuestionStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Component
-public class MultipleChoiseSaveStrategy implements QuestionSaveStrategy {
+public class MultipleChoiseSaveStrategy implements QuestionStrategy {
 
     private final QuestionMultipleChoiseService questionMultipleChoiseService;
 
@@ -29,6 +29,14 @@ public class MultipleChoiseSaveStrategy implements QuestionSaveStrategy {
             questionMultipleChoise.setIsCorrect(dt.getIsCorrect());
 
             questionMultipleChoiseService.save(questionMultipleChoise);
+        }
+    }
+
+    @Override
+    public void delete(Question question) {
+        List<QuestionMultipleChoise> questionMultipleChoises = questionMultipleChoiseService.getByQuestionId(question.getId());
+        for (QuestionMultipleChoise questionMultipleChoise: questionMultipleChoises) {
+            questionMultipleChoiseService.delete(questionMultipleChoise);
         }
     }
 

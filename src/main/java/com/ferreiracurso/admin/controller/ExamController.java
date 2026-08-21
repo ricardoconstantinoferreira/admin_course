@@ -22,4 +22,14 @@ public class ExamController {
                 examService.save(examDto)
         );
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+
+        examService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                "Prova removida"
+        );
+    }
 }

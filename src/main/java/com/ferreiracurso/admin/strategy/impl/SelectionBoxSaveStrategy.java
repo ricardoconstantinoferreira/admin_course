@@ -6,7 +6,7 @@ import com.ferreiracurso.admin.model.Question;
 import com.ferreiracurso.admin.model.QuestionSelectionBox;
 import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import com.ferreiracurso.admin.service.QuestionSelectionBoxService;
-import com.ferreiracurso.admin.strategy.QuestionSaveStrategy;
+import com.ferreiracurso.admin.strategy.QuestionStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Component
-public class SelectionBoxSaveStrategy implements QuestionSaveStrategy {
+public class SelectionBoxSaveStrategy implements QuestionStrategy {
 
     private final QuestionSelectionBoxService questionSelectionBoxService;
 
@@ -28,6 +28,14 @@ public class SelectionBoxSaveStrategy implements QuestionSaveStrategy {
             questionSelectionBox.setQuestion(question);
             questionSelectionBox.setIsCorrect(dt.getIsCorrect());
             questionSelectionBoxService.save(questionSelectionBox);
+        }
+    }
+
+    @Override
+    public void delete(Question question) {
+        List<QuestionSelectionBox> questionSelectionBoxs = questionSelectionBoxService.getByQuestionId(question.getId());
+        for (QuestionSelectionBox questionSelectionBox: questionSelectionBoxs) {
+            questionSelectionBoxService.delete(questionSelectionBox);
         }
     }
 
