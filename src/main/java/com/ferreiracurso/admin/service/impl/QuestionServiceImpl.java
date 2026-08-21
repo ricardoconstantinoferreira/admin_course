@@ -27,9 +27,20 @@ public class QuestionServiceImpl implements QuestionService {
         question.setTypeQuestion(questionDto.getTypeQuestion());
 
         Question questionResult = questionRepository.save(question);
-
         questionContext.executeSave(questionResult, questionDto);
 
         return questionResult;
+    }
+
+    @Override
+    public Question getById(Long id) {
+        return questionRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        Question question = getById(id);
+        questionContext.executeDelete(question);
+        questionRepository.deleteById(question.getId());
     }
 }

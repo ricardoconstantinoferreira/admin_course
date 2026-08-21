@@ -6,10 +6,7 @@ import com.ferreiracurso.admin.service.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -22,5 +19,11 @@ public class QuestionController {
     public ResponseEntity<Question> save(@RequestBody QuestionDto questionDto) {
         Question question = questionService.save(questionDto);
         return ResponseEntity.status(HttpStatus.OK).body(question);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        questionService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Pergunta excluída.");
     }
 }
