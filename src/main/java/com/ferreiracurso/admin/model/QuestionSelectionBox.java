@@ -7,9 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "question_options")
-public class QuestionOptions {
-
+@Table(name = "question_selection_box")
+public class QuestionSelectionBox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,4 +19,7 @@ public class QuestionOptions {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
+
+    @Column(name = "is_correct", nullable = false)
+    private boolean isCorrect = false;
 }

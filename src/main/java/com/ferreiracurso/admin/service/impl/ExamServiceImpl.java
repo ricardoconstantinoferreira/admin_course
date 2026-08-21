@@ -39,4 +39,9 @@ public class ExamServiceImpl implements ExamService {
 
         return examRepository.save(exam);
     }
+
+    @Override
+    public Exam getById(Long id) {
+        return examRepository.getReferenceById(id);
+    }
 }
