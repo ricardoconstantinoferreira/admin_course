@@ -43,6 +43,7 @@ public class ExamServiceImpl implements ExamService {
         Exam exam = new Exam();
         exam.setSubject(subject);
         exam.setTeacher(teacher);
+        exam.setDeadline(examDto.getDeadline());
 
         return examRepository.save(exam);
     }
