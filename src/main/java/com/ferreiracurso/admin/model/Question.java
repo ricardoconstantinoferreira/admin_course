@@ -24,4 +24,7 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "exam_id")
     private Exam exam;
+
+    @Column(name = "points")
+    private int points;
 }

@@ -22,4 +22,6 @@ public class QuestionDto {
     private List<DescriptionOptionDto> descriptionOption;
 
     private Long examId;
+
+    private int points;
 }
