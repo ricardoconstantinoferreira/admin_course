@@ -26,4 +26,11 @@ public class QuestionController {
         questionService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Pergunta excluída.");
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Question> update(@PathVariable Long id, @RequestBody QuestionDto questionDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                questionService.update(id, questionDto)
+        );
+    }
 }

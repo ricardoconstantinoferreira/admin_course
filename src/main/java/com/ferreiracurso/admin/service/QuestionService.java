@@ -8,4 +8,5 @@ public interface QuestionService {
     Question save(QuestionDto questionDto);
     Question getById(Long id);
     void delete(Long id);
+    Question update(Long id, QuestionDto questionDto);
 }

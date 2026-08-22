@@ -43,4 +43,10 @@ public class QuestionServiceImpl implements QuestionService {
         questionContext.executeDelete(question);
         questionRepository.deleteById(question.getId());
     }
+
+    @Override
+    public Question update(Long id, QuestionDto questionDto) {
+        delete(id);
+        return save(questionDto);
+    }
 }
