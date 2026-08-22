@@ -39,4 +39,11 @@ public class ExamController {
                 "Prova removida"
         );
     }
+
+    @PutMapping("/{id}/{deadline}")
+    public ResponseEntity<Exam> update(@PathVariable Long id, @PathVariable LocalDate deadline) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                examService.updateDeadline(id, deadline)
+        );
+    }
 }

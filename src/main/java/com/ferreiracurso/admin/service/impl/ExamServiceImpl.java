@@ -18,6 +18,7 @@ import com.ferreiracurso.admin.strategy.QuestionContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -70,5 +71,13 @@ public class ExamServiceImpl implements ExamService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Exam updateDeadline(Long id, LocalDate deadline) {
+        Exam exam = getById(id);
+        exam.setDeadline(deadline);
+
+        return examRepository.save(exam);
     }
 }
