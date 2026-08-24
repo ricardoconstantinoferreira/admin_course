@@ -1,12 +1,18 @@
 package com.ferreiracurso.admin.controller;
 
+import com.ferreiracurso.admin.dto.QuestionAnswerResponse;
 import com.ferreiracurso.admin.dto.QuestionDto;
+import com.ferreiracurso.admin.model.ExamQuestionOption;
 import com.ferreiracurso.admin.model.Question;
+import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import com.ferreiracurso.admin.service.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -32,5 +38,11 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 questionService.update(id, questionDto)
         );
+    }
+
+    @GetMapping("/{studentId}/{subjectId}")
+    public ResponseEntity<List<ExamQuestionOption>> getQuestion(@PathVariable Long studentId, @PathVariable Long subjectId) {
+        List<ExamQuestionOption> optionList = questionService.getQuestionDescription(studentId, subjectId);
+        return ResponseEntity.status(HttpStatus.OK).body(optionList);
     }
 }

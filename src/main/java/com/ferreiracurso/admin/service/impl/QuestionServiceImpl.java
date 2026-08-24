@@ -1,19 +1,29 @@
 package com.ferreiracurso.admin.service.impl;
 
+import com.ferreiracurso.admin.dto.OptionsResponse;
+import com.ferreiracurso.admin.dto.QuestionAnswerResponse;
 import com.ferreiracurso.admin.dto.QuestionDto;
 import com.ferreiracurso.admin.model.*;
+import com.ferreiracurso.admin.model.enums.TypeQuestion;
+import com.ferreiracurso.admin.repository.QuestionMultipleChoiseRepository;
 import com.ferreiracurso.admin.repository.QuestionRepository;
+import com.ferreiracurso.admin.repository.QuestionSelectionBoxRepository;
 import com.ferreiracurso.admin.service.ExamService;
 import com.ferreiracurso.admin.service.QuestionService;
 import com.ferreiracurso.admin.strategy.QuestionContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionMultipleChoiseRepository questionMultipleChoiseRepository;
+    private final QuestionSelectionBoxRepository questionSelectionBoxRepository;
     private final ExamService examService;
     private final QuestionContext questionContext;
     private static final int POINTS_LIMIT = 10;
@@ -58,5 +68,38 @@ public class QuestionServiceImpl implements QuestionService {
     public Question update(Long id, QuestionDto questionDto) {
         delete(id);
         return save(questionDto);
+    }
+
+    @Override
+    public List<ExamQuestionOption> getQuestionDescription(Long studentId, Long subjectId) {
+
+        List<QuestionAnswerResponse> lists = questionRepository.getQuestionDescription(studentId, subjectId);
+        List<ExamQuestionOption> examQuestionOptions = new ArrayList<>();
+
+        for (QuestionAnswerResponse list: lists) {
+            ExamQuestionOption option = new ExamQuestionOption();
+
+            option.setId(list.getId());
+            option.setDescription(list.getDescription());
+
+            if (list.getTypeQuestion() == TypeQuestion.WRITE.ordinal()) {
+                option.setOptions(null);
+            }
+
+            if (list.getTypeQuestion() == TypeQuestion.MULTIPLE_CHOISE.ordinal()) {
+                List<OptionsResponse> optionsChoise = questionMultipleChoiseRepository.getOptionsMultipleChoise(list.getId());
+                option.setOptions(optionsChoise);
+            }
+
+            if (list.getTypeQuestion() == TypeQuestion.SELECTION_BOX.ordinal()) {
+                List<OptionsResponse> optionsBox = questionSelectionBoxRepository.getOptionsSelectionBox(list.getId());
+                option.setOptions(optionsBox);
+            }
+
+            examQuestionOptions.add(option);
+
+        }
+
+        return examQuestionOptions;
     }
 }
