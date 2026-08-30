@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
-@Getter
+import java.util.List;
+
 @Entity
-@Table(name = "response")
-public class Response {
+@Getter
+@Setter
+@Table(name = "response_selection_box")
+public class ResponseSelectionBox {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +24,6 @@ public class Response {
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @Column(name = "answer")
-    private String answer;
-
+    @Column(name = "option_ids")
+    private String optionIds;
 }

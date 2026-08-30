@@ -55,12 +55,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getById(Long id) {
-        return null;
+        return studentRepository.getReferenceById(id);
     }
 
     @Override
     public List<Student> getAll() {
-        return List.of();
+        return studentRepository.findAll();
     }
 
     @Override
