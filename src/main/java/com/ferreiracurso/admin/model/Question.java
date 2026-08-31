@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -24,6 +26,9 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "exam_id")
     private Exam exam;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Response> response;
 
     @Column(name = "points")
     private int points;
