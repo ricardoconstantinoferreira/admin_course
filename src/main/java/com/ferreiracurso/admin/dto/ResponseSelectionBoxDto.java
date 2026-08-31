@@ -12,5 +12,5 @@ public class ResponseSelectionBoxDto {
     private Long questionId;
     private Long studentId;
     private TypeQuestion typeQuestion;
-    private List<Long> optionId;
+    private List<Long> optionsId;
 }

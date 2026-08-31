@@ -25,5 +25,5 @@ public class ResponseSelectionBox {
     private Student student;
 
     @Column(name = "option_ids")
-    private String optionIds;
+    private List<Long> optionIds;
 }

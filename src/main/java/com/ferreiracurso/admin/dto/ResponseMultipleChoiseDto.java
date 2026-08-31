@@ -6,9 +6,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ResponseMultipleOptionDto {
+public class ResponseMultipleChoiseDto {
     private Long questionId;
+    private Long optionId;
     private Long studentId;
     private TypeQuestion typeQuestion;
-    private Long optionId;
 }
