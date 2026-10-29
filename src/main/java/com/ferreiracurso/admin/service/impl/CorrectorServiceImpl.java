@@ -4,14 +4,16 @@ import com.ferreiracurso.admin.dto.CorrectorRequest;
 import com.ferreiracurso.admin.dto.QuestionAnswerResponse;
 import com.ferreiracurso.admin.dto.QuestionItemRequest;
 import com.ferreiracurso.admin.dto.ResponseCorrect;
+import com.ferreiracurso.admin.model.Corrector;
+import com.ferreiracurso.admin.model.Exam;
+import com.ferreiracurso.admin.model.Student;
 import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import com.ferreiracurso.admin.repository.CorrectorRepository;
-import com.ferreiracurso.admin.service.CorrectorService;
-import com.ferreiracurso.admin.service.QuestionService;
-import com.ferreiracurso.admin.service.ResponseService;
+import com.ferreiracurso.admin.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -21,6 +23,8 @@ public class CorrectorServiceImpl implements CorrectorService {
     private final CorrectorRepository correctorRepository;
     private final QuestionService questionService;
     private final ResponseService responseService;
+    private final ExamService examService;
+    private final StudentService studentService;
 
     @Override
     public Long getPointsOptions(Long studentId, Long examId) {
@@ -81,5 +85,18 @@ public class CorrectorServiceImpl implements CorrectorService {
         }
 
         return points;
+    }
+
+    @Override
+    public Corrector save(Long examId, Long studentId, BigDecimal points) {
+        Exam exam = examService.getById(examId);
+        Student student = studentService.getById(studentId);
+
+        Corrector corrector = new Corrector();
+        corrector.setExam(exam);
+        corrector.setStudent(student);
+        corrector.setPoints(points);
+
+        return correctorRepository.save(corrector);
     }
 }
