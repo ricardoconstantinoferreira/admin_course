@@ -6,6 +6,7 @@ import com.ferreiracurso.admin.model.Question;
 import com.ferreiracurso.admin.model.QuestionSelectionBox;
 import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import com.ferreiracurso.admin.service.QuestionSelectionBoxService;
+import com.ferreiracurso.admin.service.ResponseMultipleChoiseService;
 import com.ferreiracurso.admin.strategy.QuestionStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.util.List;
 public class SelectionBoxSaveStrategy implements QuestionStrategy {
 
     private final QuestionSelectionBoxService questionSelectionBoxService;
+    private final ResponseMultipleChoiseService responseMultipleChoiseService;
 
     @Override
     public void save(Question question, QuestionDto dto) {

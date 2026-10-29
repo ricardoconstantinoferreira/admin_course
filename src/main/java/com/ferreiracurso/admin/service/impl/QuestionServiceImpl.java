@@ -102,4 +102,14 @@ public class QuestionServiceImpl implements QuestionService {
 
         return examQuestionOptions;
     }
+
+    @Override
+    public List<QuestionAnswerResponse> getQuestionOptions(Long studentId, Long examId, Integer typeQuestion) {
+        return questionRepository.getQuestionOptions(studentId, examId, typeQuestion);
+    }
+
+    @Override
+    public QuestionAnswerResponse getQuestionDescriptionCorrector(Long studentId, Long examId, Long questionId) {
+        return questionRepository.getQuestionDescriptionCorrector(studentId, examId, questionId);
+    }
 }

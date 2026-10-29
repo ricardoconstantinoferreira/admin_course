@@ -1,5 +1,6 @@
 package com.ferreiracurso.admin.service;
 
+import com.ferreiracurso.admin.dto.QuestionAnswerResponse;
 import com.ferreiracurso.admin.dto.QuestionDto;
 import com.ferreiracurso.admin.model.ExamQuestionOption;
 import com.ferreiracurso.admin.model.Question;
@@ -13,4 +14,6 @@ public interface QuestionService {
     void delete(Long id);
     Question update(Long id, QuestionDto questionDto);
     List<ExamQuestionOption> getQuestionDescription(Long studentId, Long subjectId);
+    List<QuestionAnswerResponse> getQuestionOptions(Long studentId, Long examId, Integer typeQuestion);
+    QuestionAnswerResponse getQuestionDescriptionCorrector(Long studentId, Long examId, Long questionId);
 }

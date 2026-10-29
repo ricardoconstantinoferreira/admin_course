@@ -1,5 +1,6 @@
 package com.ferreiracurso.admin.service.impl;
 
+import com.ferreiracurso.admin.dto.ResponseCorrect;
 import com.ferreiracurso.admin.model.ResponseMultipleChoise;
 import com.ferreiracurso.admin.repository.ResponseMultipleChoiseRepository;
 import com.ferreiracurso.admin.service.ResponseMultipleChoiseService;
@@ -15,5 +16,10 @@ public class ResponseMultipleChoiseServiceImpl implements ResponseMultipleChoise
     @Override
     public ResponseMultipleChoise save(ResponseMultipleChoise responseMultipleChoise) {
         return responseMultipleChoiseRepository.save(responseMultipleChoise);
+    }
+
+    @Override
+    public ResponseCorrect getResponseCorrectQuestion(Long questionId) {
+        return responseMultipleChoiseRepository.getResponseCorrect(questionId);
     }
 }

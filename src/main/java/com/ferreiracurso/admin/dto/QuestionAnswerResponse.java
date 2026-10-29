@@ -5,4 +5,5 @@ public interface QuestionAnswerResponse {
     Long getId();
     String getDescription();
     Integer getTypeQuestion();
+    Long getPoints();
 }

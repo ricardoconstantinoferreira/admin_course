@@ -25,4 +25,7 @@ public class Response {
     @Column(name = "answer")
     private String answer;
 
+    @Column(name = "points")
+    private Double points;
+
 }
