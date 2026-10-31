@@ -3,7 +3,6 @@ package com.ferreiracurso.admin.service.impl;
 import com.ferreiracurso.admin.dto.ResponseCorrect;
 import com.ferreiracurso.admin.dto.ResponseCorrectBox;
 import com.ferreiracurso.admin.model.Response;
-import com.ferreiracurso.admin.model.enums.TypeQuestion;
 import com.ferreiracurso.admin.repository.ResponseRepository;
 import com.ferreiracurso.admin.service.ResponseService;
 import com.ferreiracurso.admin.util.Utils;
