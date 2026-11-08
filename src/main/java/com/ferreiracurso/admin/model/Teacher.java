@@ -1,16 +1,16 @@
 package com.ferreiracurso.admin.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Professor entity representing an instructor/teacher.
- * - Many-to-many relationship with Subject (owning side)
- * - Salary uses BigDecimal for monetary accuracy
- */
+@Setter
+@Getter
 @Entity
 @Table(name = "teacher")
 public class Teacher {
@@ -42,72 +42,7 @@ public class Teacher {
     )
     private Set<Subject> subjects = new HashSet<>();
 
-    public Teacher() {
-    }
+    @Column(name = "email")
+    private String email;
 
-    public Teacher(Long id, String name, String specialization, BigDecimal salary, LocalDateTime admissionDate, LocalDateTime endDate, Set<Subject> subjects) {
-        this.id = id;
-        this.name = name;
-        this.specialization = specialization;
-        this.salary = salary;
-        this.admissionDate = admissionDate;
-        this.endDate = endDate;
-        this.subjects = subjects;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
-    public BigDecimal getSalary() {
-        return salary;
-    }
-
-    public void setSalary(BigDecimal salary) {
-        this.salary = salary;
-    }
-
-    public Set<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getAdmissionDate() {
-        return admissionDate;
-    }
-
-    public void setAdmissionDate(LocalDateTime admissionDate) {
-        this.admissionDate = admissionDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
 }
