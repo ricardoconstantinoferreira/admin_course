@@ -1,15 +1,12 @@
 package com.ferreiracurso.admin.service.impl;
 
-import com.ferreiracurso.admin.model.Corrector;
 import com.ferreiracurso.admin.service.EmailService;
 import com.resend.Resend;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.Attachment;
 import com.resend.services.emails.model.CreateEmailOptions;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -17,7 +14,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -33,10 +29,10 @@ public class EmailServiceImpl implements EmailService {
     @Value("${resend.api.key}")
     private String apiKey;
 
-    @Override
-    public void send(Corrector corrector) throws IOException, ResendException {
-        BigDecimal points = corrector.getPoints();
-        String email = corrector.getStudent().getEmail();
+    public void notification(
+            Context context, String template, String email, String subject
+    ) throws IOException, ResendException  {
+
         Resend resend = new Resend(apiKey);
 
         String mailFrom = environment.getProperty("resend.domain");
@@ -51,17 +47,14 @@ public class EmailServiceImpl implements EmailService {
                 .contentId("ferreiracurso")
                 .build();
 
-        final Context ctx = new Context(LocaleContextHolder.getLocale());
-        ctx.setVariable("name", corrector.getStudent().getName());
-        ctx.setVariable("points", corrector.getPoints());
-        ctx.setVariable("ferreiracurso", logo);
+        context.setVariable("ferreiracurso", logo);
 
-        final String htmlContent = templateEngine.process("corrector", ctx);
+        final String htmlContent = templateEngine.process(template, context);
 
         CreateEmailOptions params = CreateEmailOptions.builder()
                 .from(mailFrom)
-                .to(corrector.getStudent().getEmail())
-                .subject("Correção da Prova")
+                .to(email)
+                .subject(subject)
                 .html(htmlContent)
                 .attachments(Collections.singletonList(logoAnexo))
                 .build();
