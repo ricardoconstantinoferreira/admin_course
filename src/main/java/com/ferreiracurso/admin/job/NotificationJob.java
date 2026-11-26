@@ -1,7 +1,6 @@
 package com.ferreiracurso.admin.job;
 
 import com.ferreiracurso.admin.dto.TeacherDto;
-import com.ferreiracurso.admin.mapper.ExamMapper;
 import com.ferreiracurso.admin.model.Exam;
 import com.ferreiracurso.admin.model.StudentRegistrationEmailResponse;
 import com.ferreiracurso.admin.model.StudentRegistrationResponse;
