@@ -10,7 +10,10 @@ import java.time.LocalDate;
 public class ExamDto {
 
     private Long id;
+    private String title;
     private Long teacherId;
     private Long subjectId;
     private LocalDate deadline;
+    private boolean notification_send_teacher;
+    private boolean notification_send_student;
 }

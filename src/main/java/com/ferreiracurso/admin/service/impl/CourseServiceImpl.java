@@ -3,11 +3,14 @@ package com.ferreiracurso.admin.service.impl;
 import com.ferreiracurso.admin.dto.CourseDto;
 import com.ferreiracurso.admin.dto.CreateCourseRequest;
 import com.ferreiracurso.admin.model.Course;
+import com.ferreiracurso.admin.model.StudentRegistrationEmailResponse;
+import com.ferreiracurso.admin.model.StudentRegistrationResponse;
 import com.ferreiracurso.admin.model.Subject;
 import com.ferreiracurso.admin.repository.CourseRepository;
 import com.ferreiracurso.admin.repository.SubjectRepository;
 import com.ferreiracurso.admin.service.CourseService;
 import com.ferreiracurso.admin.mapper.CourseMapper;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
@@ -26,12 +30,6 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final SubjectRepository subjectRepository;
     private final CourseMapper courseMapper;
-
-    public CourseServiceImpl(CourseRepository courseRepository, SubjectRepository subjectRepository, CourseMapper courseMapper) {
-        this.courseRepository = courseRepository;
-        this.subjectRepository = subjectRepository;
-        this.courseMapper = courseMapper;
-    }
 
     @Override
     public CourseDto create(CreateCourseRequest request) {
@@ -84,6 +82,16 @@ public class CourseServiceImpl implements CourseService {
         }
         courseRepository.deleteById(id);
         logger.info("Deleted Course id {}", id);
+    }
+
+    @Override
+    public List<StudentRegistrationResponse> getStudentExamNoDone(Long examId) {
+        return courseRepository.getStudentExamNoDone(examId);
+    }
+
+    @Override
+    public List<StudentRegistrationEmailResponse> getStudentEmail(Long examId) {
+        return courseRepository.getStudentEmail(examId);
     }
 
     // Local exception similar to SubjectServiceImpl's inner exception

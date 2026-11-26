@@ -1,14 +1,13 @@
 package com.ferreiracurso.admin.service.impl;
 
 import com.ferreiracurso.admin.dto.AssociateTeacherSubjects;
-import com.ferreiracurso.admin.dto.CreateTeacherRequest;
 import com.ferreiracurso.admin.dto.TeacherDto;
+import com.ferreiracurso.admin.mapper.TeacherMapper;
 import com.ferreiracurso.admin.model.Teacher;
 import com.ferreiracurso.admin.model.Subject;
 import com.ferreiracurso.admin.repository.TeacherRepository;
 import com.ferreiracurso.admin.repository.SubjectRepository;
 import com.ferreiracurso.admin.service.TeacherService;
-import com.ferreiracurso.admin.mapper.ProfessorMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,16 +29,16 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
-    private final ProfessorMapper professorMapper;
+    private final TeacherMapper teacherMapper;
 
     @Override
-    public TeacherDto create(CreateTeacherRequest request) {
+    public TeacherDto create(TeacherDto teacherDto) {
         Teacher teacher = new Teacher();
-        teacher = professorMapper.toEntity(teacher, request);
+        teacher = teacherMapper.toEntity(teacherDto);
 
-        if (request.getSubjectIds() != null && !request.getSubjectIds().isEmpty()) {
-            Set<Subject> subjects = subjectRepository.findAllById(request.getSubjectIds()).stream().collect(Collectors.toSet());
-            if (subjects.size() != request.getSubjectIds().size()) {
+        if (teacherDto.getSubjectIds() != null && !teacherDto.getSubjectIds().isEmpty()) {
+            Set<Subject> subjects = subjectRepository.findAllById(teacherDto.getSubjectIds()).stream().collect(Collectors.toSet());
+            if (subjects.size() != teacherDto.getSubjectIds().size()) {
                 throw new ResourceNotFoundException("Subject", "id", "one or more subject ids not found");
             }
             teacher.setSubjects(subjects);
@@ -47,34 +46,34 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setAdmissionDate(LocalDateTime.now());
         Teacher saved = teacherRepository.save(teacher);
         logger.info("Created Professor id {}", saved.getId());
-        return professorMapper.toDto(saved);
+        return teacherMapper.toDto(saved);
     }
 
     @Override
     public TeacherDto getById(Long id) {
         Teacher p = teacherRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professor", "id", id));
-        return professorMapper.toDto(p);
+        return teacherMapper.toDto(p);
     }
 
     @Override
     public List<TeacherDto> getAll() {
-        return teacherRepository.findAll().stream().map(professorMapper::toDto).collect(Collectors.toList());
+        return teacherRepository.findAll().stream().map(teacherMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public TeacherDto update(Long id, CreateTeacherRequest request) {
+    public TeacherDto update(Long id, TeacherDto teacherDto) {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professor", "id", id));
-        teacher = professorMapper.toEntity(teacher, request);
-        if (request.getSubjectIds() != null) {
-            Set<Subject> subjects = subjectRepository.findAllById(request.getSubjectIds()).stream().collect(Collectors.toSet());
-            if (subjects.size() != request.getSubjectIds().size()) {
+        teacher = teacherMapper.toEntity(teacherDto);
+        if (teacherDto.getSubjectIds() != null) {
+            Set<Subject> subjects = subjectRepository.findAllById(teacherDto.getSubjectIds()).stream().collect(Collectors.toSet());
+            if (subjects.size() != teacherDto.getSubjectIds().size()) {
                 throw new ResourceNotFoundException("Subject", "id", "one or more subject ids not found");
             }
             teacher.setSubjects(subjects);
         }
         Teacher saved = teacherRepository.save(teacher);
         logger.info("Updated Professor id {}", saved.getId());
-        return professorMapper.toDto(saved);
+        return teacherMapper.toDto(saved);
     }
 
     @Override

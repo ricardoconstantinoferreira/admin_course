@@ -1,7 +1,6 @@
 package com.ferreiracurso.admin.controller;
 
 import com.ferreiracurso.admin.dto.AssociateTeacherSubjects;
-import com.ferreiracurso.admin.dto.CreateTeacherRequest;
 import com.ferreiracurso.admin.dto.TeacherDto;
 import com.ferreiracurso.admin.model.Teacher;
 import com.ferreiracurso.admin.service.TeacherService;
@@ -13,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,13 +27,13 @@ public class TeacherController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody CreateTeacherRequest request, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody TeacherDto teacherDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             logger.warn("Invalid create professor request");
             return ResponseEntity.badRequest().body("Invalid payload");
         }
-        TeacherDto created = teacherService.create(request);
-        return ResponseEntity.created(URI.create("/api/professors/" + created.getId())).body(created);
+        TeacherDto created = teacherService.create(teacherDto);
+        return ResponseEntity.ok(created);
     }
 
     @GetMapping("/{id}")
@@ -63,7 +61,7 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CreateTeacherRequest request, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody TeacherDto request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body("Invalid payload");
         }
