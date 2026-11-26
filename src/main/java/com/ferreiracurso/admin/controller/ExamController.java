@@ -25,6 +25,9 @@ public class ExamController {
             throw new RuntimeException("Data de limite da prova não pode ser menor que hoje.");
         }
 
+        examDto.setNotification_send_teacher(false);
+        examDto.setNotification_send_student(false);
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 examService.save(examDto)
         );

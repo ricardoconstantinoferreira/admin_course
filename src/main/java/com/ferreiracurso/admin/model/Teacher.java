@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Setter
@@ -45,4 +46,15 @@ public class Teacher {
     @Column(name = "email")
     private String email;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(specialization, teacher.specialization) && Objects.equals(salary, teacher.salary) && Objects.equals(admissionDate, teacher.admissionDate) && Objects.equals(endDate, teacher.endDate) && Objects.equals(subjects, teacher.subjects) && Objects.equals(email, teacher.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, specialization, salary, admissionDate, endDate, subjects, email);
+    }
 }

@@ -42,9 +42,13 @@ public class ExamServiceImpl implements ExamService {
         Teacher teacher = teacherMapper.toEntity(teacherDto);
 
         Exam exam = new Exam();
+
+        exam.setTitle(examDto.getTitle());
         exam.setSubject(subject);
         exam.setTeacher(teacher);
         exam.setDeadline(examDto.getDeadline());
+        exam.setNotification_send_student(examDto.isNotification_send_student());
+        exam.setNotification_send_teacher(examDto.isNotification_send_teacher());
 
         return examRepository.save(exam);
     }
@@ -78,6 +82,21 @@ public class ExamServiceImpl implements ExamService {
         Exam exam = getById(id);
         exam.setDeadline(deadline);
 
+        return examRepository.save(exam);
+    }
+
+    @Override
+    public List<Exam> findExpiredExamToTeacher() {
+        return examRepository.findExpiredExamToTeacher();
+    }
+
+    @Override
+    public List<Exam> findExpiredExamToStudent() {
+        return examRepository.findExpiredExamToStudent();
+    }
+
+    @Override
+    public Exam addNotification(Exam exam) {
         return examRepository.save(exam);
     }
 }

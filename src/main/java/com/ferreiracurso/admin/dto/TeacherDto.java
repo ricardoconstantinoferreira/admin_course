@@ -14,6 +14,8 @@ import java.util.Set;
 @Setter
 public class TeacherDto {
 
+    private Long id;
+
     @NotBlank
     @Size(min = 1, max = 200)
     private String name;

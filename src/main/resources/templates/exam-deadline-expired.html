@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Prova Corrigida</title>
+</head>
+<body>
+
+<section>
+    <h2>Caro professor <b th:text="${teacher}">teacher</b>!</h2>
+
+    <p>Seu exame <b th:text="${title}">title</b> o prazo já venceu!</p>
+    <p>Segue lista dos alunos que não concluiram o exame!</p>
+
+    <div th:if="${not #lists.isEmpty(students)}">
+        <ul>
+            <li th:each="student : ${students}" th:text="${student}">Nome do Aluno</li>
+        </ul>
+    </div>
+
+    <div>
+        <img src="images/ferreira-curso.png" data-th-src="|cid:ferreiracurso|" height="80" />
+    </div>
+
+</section>
+
+</body>
+</html>
