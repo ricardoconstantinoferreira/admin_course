@@ -46,7 +46,7 @@ public class NotificationJob {
         }
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(cron = "0 0 8 * * *")
     public void sendMailToStudent() {
         List<Exam> exams = examService.findExpiredExamToStudent();
 
